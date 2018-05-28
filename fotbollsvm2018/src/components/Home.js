@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 import React, { Component } from 'react';
 import withAuthorization from './withAuthorization';
 import { db } from '../firebase';
-=======
-import React from 'react';
->>>>>>> parent of 7e38b99... Some more work to be able to reset/change password
 
 class HomePage extends Component {
     constructor(props) {
@@ -37,7 +33,6 @@ class HomePage extends Component {
 
 const UserList = ({ users }) =>
     <div>
-<<<<<<< HEAD
         <h2>List of Usernames of Users</h2>
         <p>(Saved on Sign Up in Firebase Database)</p>
 
@@ -49,9 +44,3 @@ const UserList = ({ users }) =>
 const authCondition = (authUser) => !!authUser;
 
 export default withAuthorization(authCondition)(HomePage);
-=======
-        <h1>Home Page</h1>
-    </div>
-
-export default HomePage;
->>>>>>> parent of 7e38b99... Some more work to be able to reset/change password
