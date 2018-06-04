@@ -6,3 +6,4 @@ export const ACCOUNT = '/account';
 export const PASSWORD_FORGET = '/pw-forget';
 export const ADMIN = '/admin';
 export const CREATEGAMES = '/creategames';
+export const GAMESTATS = '/gamestats';

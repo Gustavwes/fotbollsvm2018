@@ -13,6 +13,7 @@ import { firebase } from '../firebase'
 import withAuthentication from './withAuthentication';
 import AdminPage from './Admin';
 import CreateGames from './CreateGames';
+import GameStatsPage from './GameStats';
 
 
 const App = () =>
@@ -29,6 +30,7 @@ const App = () =>
       <Route exact path={routes.ACCOUNT} component={() => <AccountPage />} />
       <Route exact path={routes.ADMIN} component={() => <AdminPage />} />
       <Route exact path={routes.CREATEGAMES} component={() => <CreateGames />} />
+      <Route exact path={routes.GAMESTATS} component={() => <GameStatsPage />} />
     </div>
   </Router>
 
