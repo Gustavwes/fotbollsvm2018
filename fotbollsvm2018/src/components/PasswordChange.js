@@ -24,7 +24,7 @@ class PasswordChangeForm extends Component {
 
         auth.doPasswordUpdate(passwordOne)
             .then(() => {
-                this.setState(() => ({ ... INITIAL_STATE }));
+                this.setState(() => ({ ...INITIAL_STATE }));
             })
             .catch(error => {
                 this.setState(byPropKey('error', error));

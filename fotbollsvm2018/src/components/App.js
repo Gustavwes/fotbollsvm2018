@@ -12,6 +12,7 @@ import * as routes from '../constants/routes';
 import { firebase } from '../firebase'
 import withAuthentication from './withAuthentication';
 import AdminPage from './Admin';
+import CreateGames from './CreateGames';
 
 
 const App = () =>
@@ -27,6 +28,7 @@ const App = () =>
       <Route exact path={routes.HOME} component={() => <HomePage />} />
       <Route exact path={routes.ACCOUNT} component={() => <AccountPage />} />
       <Route exact path={routes.ADMIN} component={() => <AdminPage />} />
+      <Route exact path={routes.CREATEGAMES} component={() => <CreateGames />} />
     </div>
   </Router>
 

@@ -1,4 +1,7 @@
 import React from 'react';
+import { db } from 'firebase';
+
+
 
 const LandingPage = () =>
     <div>
