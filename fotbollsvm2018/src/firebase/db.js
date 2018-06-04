@@ -6,8 +6,8 @@ export const doCreateUser = (id, username, email) =>
         username,
         email,
     });
-export const doCreateGame = (matchday, date, time, teamA, teamB) =>
-    db.ref(`games`).set({
+export const doCreateGame = (id, matchday, date, time, teamA, teamB) =>
+    db.ref(`games/${id}`).set({
         matchday,
         date,
         time,

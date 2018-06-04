@@ -1,5 +1,6 @@
 import React from 'react';
 import { db } from '../firebase';
+import uuid from 'uuid/v1';
 
 import * as routes from '../constants/routes';
 
@@ -19,26 +20,7 @@ class CreateMatch extends React.Component {
     constructor(props) {
         super(props);
         this.state = { ...INITIAL_STATE };
-    }
-    // saveToDataBase(e){
-    //     e.preventDefault();
-    //     const matchDayText = e.target.elements.matchDayInput.value.trim();
-    //     const dateInput = e.target.elements.dateInput.value;
-    //     const timeInput = e.target.elements.timeInput.value;
-    //     const teamAInput = e.target.elements.teamAInput.value;
-    //     const teamBInput = e.target.elements.teamBInput.value;
-
-    //     const database = db
-    //     db.ref('games/').set({
-    //         matchDay: matchDayText,
-    //         date: dateInput,
-    //         time: timeInput,
-    //         teamA: teamAInput,
-    //         teamB: teamBInput
-    //     });
-    //     console.log('Matchday:' + matchDayText)
-
-    // }
+    }   
     onSubmit = (event) => {
         const {
             matchday,
@@ -54,7 +36,7 @@ class CreateMatch extends React.Component {
 
 
         // Create a user in your own accessible Firebase Database too
-        db.doCreateGame(matchday, date, time, teamA, teamB)
+        db.doCreateGame(uuid(), matchday, date, time, teamA, teamB)
             .then(() => {
                 this.setState(() => ({ ...INITIAL_STATE }));
                 history.push(routes.HOME);
