@@ -4,9 +4,7 @@ import * as routes from '../constants/routes';
 
 class GameStats extends React.Component {
     constructor(props){
-        super(props);
-        //this.getGamesList = this.getGamesList.bind(this);
-        //this.getGamesListTest = this.getGamesListTest.bind(this);
+        super(props);   
         this.state = {
             gamesDB: db.doGetAllGames(),  
             games: null
@@ -14,43 +12,20 @@ class GameStats extends React.Component {
               
     }
 
-    componentDidMount() {
-         //this.getGamesList();
-        // let that = this;
-        // that.setState({
-        //     games: [...this.state.games,this.getGamesList()]
-        // })
+    componentDidMount() { 
         db.doGetAllGamesTest().then(snapshot =>
             this.setState(() => ({ games: snapshot.val() }))
         );
-        console.log(this.state.games);
-    }
-
-    // getGamesList() {
-    //     let that = this;
-    //     //let gameArray = [];
-    //     this.state.gamesDB.on('value', function(snapshot){
-    //      snapshot.forEach(function(game) {
-    //          console.log(game.val());
-    //          let gameObject = game.val(); 
-    //       //   gameArray.push(gameObject);                    
-    //          that.setState({
-    //              games: [...that.state.games, gameObject]
-    //          }); 
-    //      })
-    //       console.log(that.state.games.length);
-    //     //console.log(gameArray.length);
-    //    // return gameArray;
-         
-    //  })
-
-    // }
+        // var test = db.doGetAllGamesTest();
+        //     this.setState(() => ({ games: test }));
+        //     console.log(test);      
+        
+    } 
     
     render(){        
         const { games } = this.state;
         return (
-            <div>
-                <p>WHY</p>
+            <div>                
                 { !!games && <GamesList games ={games} /> }
             </div>
         )
@@ -59,11 +34,24 @@ class GameStats extends React.Component {
 
 const GamesList = ({ games }) =>
 <div>
+
     <h2>List of Games</h2>
     <p>(Saved in Firebase Database)</p>
-
+    
     {Object.keys(games).map(key =>
-        <div key={key}>Matchday:{games[key].matchday}{games[key].teamA} vs {games[key].teamB}</div>
+        <div key={key}>
+            <form>
+                <p>{games[key].teamA}</p>
+                <input type="text">
+                </input>
+                <p>vs</p>
+                <input type="text">
+                </input>
+                <p>{games[key].teamB}</p>
+                <button>Submit</button>    
+            
+            </form>
+        </div>
     )}
 </div>
 

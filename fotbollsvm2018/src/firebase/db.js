@@ -19,11 +19,14 @@ export const doCreateGame = (id, matchday, date, time, teamA, teamB) =>
 
 export const doGetAllGames = () => 
         db.ref('games');
+
 export const doGetAllGamesTest = () =>
-    db.ref('games').once('value');
-        
-
-
+     db.ref('games').once('value');
+    // db.ref('games').orderByChild('matchday').on("value", function(snapshot) {
+    //     snapshot.forEach(function(data) {
+    //       console.log("The " + data.key + " dinosaur's score is " + data.val() + data.val().matchday);
+    //     });
+    //   });
 
 export const onceGetUsers = () =>
     db.ref('users').once('value');
