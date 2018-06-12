@@ -5,6 +5,9 @@ import AuthUserContext from './AuthUserContext';
 import uuid from 'uuid/v1';
 import { Form, Field, reduxForm } from 'redux-form';
 import { TextField } from '@material-ui/core';
+import { connect } from 'react-redux';
+
+import { getBets } from '../state/actions/bets';
 
 class GameStats extends React.Component {
     constructor(props) {
@@ -23,6 +26,8 @@ class GameStats extends React.Component {
         );
         var userId = firebase.auth.currentUser.uid;
 
+        
+
         this.setState({ userId });
 
     }
@@ -34,7 +39,7 @@ class GameStats extends React.Component {
         return (
             <div>
                 {/* <p>{this.state.userId}</p> */}
-                {!!games && <GamesListForm games={games} userid={this.state.userId} />}
+                {!!games && <GamesListForm games={games} userid={this.state.userId} {...this.props} />}
             </div>
         );
     }
@@ -70,27 +75,9 @@ class GamesListForm extends React.Component {
         this.submitBet = this.submitBet.bind(this);
     }
     submitBet = (values) => {
-        console.log(values);
+        const userId = this.props.userid;       
 
-        const firstKey = Object.keys(values)[0];
-        const secondKey = Object.keys(values)[1];
-        let teamAResult = 0;
-        let teamBResult = 0;
-
-        const userId = this.props.userid;
-        const gameId = firstKey.split(':')[0];
-
-        if(firstKey.split(':')[1] === 'teamA') {
-            teamAResult = values[firstKey];
-            teamBResult = values[secondKey];
-        } else {
-            teamBResult = values[firstKey];
-            teamAResult = values[secondKey];
-        }
-
-        console.log(teamAResult, teamBResult, userId, gameId);
-
-        db.doCreateBet(uuid(), teamAResult, teamBResult, userId, gameId);
+        db.doCreateBet(userId, values);
 
     }
     render() {
@@ -105,13 +92,13 @@ class GamesListForm extends React.Component {
                             <label>{this.props.games[key].teamA}</label>
                             {/* Create hidden input for game Id here */}
                             <Field
-                                name={`${key}:teamA`}
+                                name={`${key}.teamAResult`}
                                 component={({input, ...props}) => <TextField type="number" {...input} {...props}/>}
                                 >
                             </Field>
                                 <label>vs</label>
                             <Field
-                                name={`${key}:teamB`}
+                                name={`${key}.teamBResult`}
                                 component={({input, ...props}) => <TextField type="number" {...input} {...props}/>}
                             >
                             </Field>
@@ -128,14 +115,28 @@ class GamesListForm extends React.Component {
 
 }
 
-GamesListForm = reduxForm({form: 'gamesListForms' })(GamesListForm);
 
+class GameStatsPage extends React.Component {
+    componentWillMount() {
+        this.props.getBets().then(() => console.log(this.props.initialValues));
+    }
 
-const GameStatsPage = () => (
-    <div>
-        <h1>Game Stats</h1>
-        <GameStats />
-    </div>
-);
+    render() { return (
+        <div>
+            <h1>Game Stats</h1>
+            <GameStats {...this.props} />
+        </div>
+    )}
+};
 
-export default GameStatsPage;
+GameStatsPage = reduxForm({form: 'gamesListForm', enableReinitialize: true })(GameStatsPage);
+
+const mapStateToProps = state => ({
+    initialValues: state.bets.bets,
+});
+
+const mapDispatchToProps = dispatch => ({
+    getBets: () => dispatch(getBets()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameStatsPage);
