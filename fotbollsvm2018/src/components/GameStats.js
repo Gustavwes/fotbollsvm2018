@@ -34,7 +34,7 @@ class GameStats extends React.Component {
                {/* <p>{this.state.userId}</p> */}
                 {!!games && <GamesList games={games} userid={this.state.userId} />}
             </div>
-        )
+        );
     }
 }
 // const CurrentUserTest = () => (

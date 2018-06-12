@@ -2,10 +2,9 @@ import React from 'react';
 import { db } from 'firebase';
 
 
-
 const LandingPage = () =>
-    <div>
+    (<div>
         <h1>Landing Page</h1>
-    </div>
+     </div>);
 
 export default LandingPage;

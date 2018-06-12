@@ -6,17 +6,17 @@ import PasswordChangeForm from './PasswordChange';
 import withAuthorization from './withAuthorization';
 
 const AccountPage = () =>
-    <AuthUserContext.Consumer>
+    (<AuthUserContext.Consumer>
         {authUser =>
-            <div>
+            (<div>
                 <h1>Account: {authUser.email}</h1>
                 <PasswordForgetForm />
                 <PasswordChangeForm />
-            </div>
+            </div>)
         }
-    </AuthUserContext.Consumer>
+     </AuthUserContext.Consumer>);
 
 
-    const authCondition = (authUser) => !!authUser;
+const authCondition = authUser => !!authUser;
 
-    export default withAuthorization(authCondition)(AccountPage);
+export default withAuthorization(authCondition)(AccountPage);

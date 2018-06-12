@@ -1,6 +1,6 @@
 import { db } from './firebase';
-import React from 'react'
-//User API
+import React from 'react';
+// User API
 
 export const doCreateUser = (id, username, email) =>
     db.ref(`users/${id}`).set({
@@ -14,11 +14,11 @@ export const doCreateGame = (id, matchday, date, time, teamA, teamB) =>
         date,
         time,
         teamA,
-        teamB
+        teamB,
     });
 
-export const doGetAllGames = () => 
-        db.ref('games');
+export const doGetAllGames = () =>
+    db.ref('games');
 
 export const doCreateBet = (id, teamAResult, teamBResult, userId, gameId) =>
     db.ref(`bets/${id}`).set({
@@ -28,7 +28,7 @@ export const doCreateBet = (id, teamAResult, teamBResult, userId, gameId) =>
         gameId
     });
 export const doGetAllGamesTest = () =>
-     db.ref('games').once('value');
+    db.ref('games').once('value');
     // db.ref('games').orderByChild('matchday').on("value", function(snapshot) {
     //     snapshot.forEach(function(data) {
     //       console.log("The " + data.key + " dinosaur's score is " + data.val() + data.val().matchday);

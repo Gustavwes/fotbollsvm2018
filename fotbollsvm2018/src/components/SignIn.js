@@ -7,12 +7,12 @@ import * as routes from '../constants/routes';
 
 
 const SignInPage = ({ history }) =>
-    <div>
+    (<div>
         <h1>SignIn Page</h1>
         <SignInForm history={history} />
         <PasswordForgetLink />
         <SignUpLink />
-    </div>
+     </div>);
 
 const byPropKey = (propertyName, value) => () => ({
     [propertyName]: value,
@@ -27,10 +27,10 @@ const INITIAL_STATE = {
 class SignInForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { ...INITIAL_STATE};
+        this.state = { ...INITIAL_STATE };
     }
 
-    onSubmit = (event) => {
+    onSubmit = event => {
         const {
             email,
             password,
@@ -49,7 +49,7 @@ class SignInForm extends Component {
                 this.setState(byPropKey('error', error));
             });
 
-            event.preventDefault();
+        event.preventDefault();
     }
 
     render() {
@@ -89,6 +89,4 @@ class SignInForm extends Component {
 
 export default withRouter(SignInPage);
 
-export {
-    SignInForm,
-};
+export { SignInForm };

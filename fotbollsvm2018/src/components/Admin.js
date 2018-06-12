@@ -4,15 +4,15 @@ import AuthUserContext from './AuthUserContext';
 import withAuthorization from './withAuthorization';
 
 const AdminPage = () =>
-    <AuthUserContext.Consumer>
+    (<AuthUserContext.Consumer>
         {authUser =>
-            <div>
+            (<div>
                 <h1>Admin</h1>
                 <p>Restricted area! Only users who are admins are authorized.</p>
-            </div>
+            </div>)
         }
-    </AuthUserContext.Consumer>
+     </AuthUserContext.Consumer>);
 
-const authCondition = (authUser) => !!authUser && authUser.role === 'ADMIN';
+const authCondition = authUser => !!authUser && authUser.role === 'ADMIN';
 
 export default withAuthorization(authCondition)(AdminPage);
