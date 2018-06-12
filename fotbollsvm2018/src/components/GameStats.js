@@ -62,6 +62,42 @@ const byPropKey = (propertyName, value) => () => ({
     [propertyName]: value,
 });
 
+<<<<<<< HEAD
+        <h2>List of Games</h2>
+        <p>(Saved in Firebase Database)</p>
+
+        {/* {
+            games.map(doc => {
+                const key = doc.val();
+
+                return (<div key={key}>
+                    <form>
+                        <p>{games[key].teamA}</p>
+                        <input type="text" />
+                        <p>vs</p>
+                        <input type="text" />
+                        <p>{games[key].teamB}</p>
+                        <button>Submit</button>
+    
+                    </form>
+                 </div>);
+            })
+        } */}
+        {Object.keys(games).map(key =>
+            (<div key={key}>
+                <form>
+                    <p>{games[key].teamA}</p>
+                    <input type="text" />
+                    <p>vs</p>
+                    <input type="text" />
+                    <p>{games[key].teamB}</p>
+                    <button>Submit</button>
+
+                </form>
+             </div>))}
+    </div>
+);
+=======
 class GamesList extends React.Component{
     constructor(props) {
         super(props);
@@ -123,6 +159,7 @@ class GamesList extends React.Component{
     }
 
 }
+>>>>>>> be87fab7af487b89b2337be497140fb08140cf9a
 
 
 const GameStatsPage = () => (

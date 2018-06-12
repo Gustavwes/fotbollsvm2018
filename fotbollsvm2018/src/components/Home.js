@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import withAuthorization from './withAuthorization';
+import { connect } from 'react-redux';
 import { db } from '../firebase';
+import { getGames } from '../state/actions/games';
 
 
 class HomePage extends Component {
@@ -13,6 +15,10 @@ class HomePage extends Component {
     }
 
     componentDidMount() {
+        // db.doGetAllGamesTest();
+        this.props.getGames().then(games => {
+            console.log(games);
+        });
         db.onceGetUsers().then(snapshot =>
             this.setState(() => ({ users: snapshot.val() })));
     }
@@ -42,4 +48,12 @@ const UserList = ({ users }) =>
 
 const authCondition = authUser => !!authUser;
 
-export default withAuthorization(authCondition)(HomePage);
+const mapStateToProps = (state) => ({
+    games: state.games.games,
+  });
+
+  const mapDispatchToProps = dispatch => ({
+    getGames: () => dispatch(getGames()),
+  });
+
+export default withAuthorization(authCondition)(connect(mapStateToProps, mapDispatchToProps)(HomePage));

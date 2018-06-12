@@ -1,5 +1,5 @@
 import { db } from './firebase';
-import React from 'react';
+import firstBy from 'thenby';
 // User API
 
 export const doCreateUser = (id, username, email) =>
@@ -28,12 +28,9 @@ export const doCreateBet = (id, teamAResult, teamBResult, userId, gameId) =>
         gameId
     });
 export const doGetAllGamesTest = () =>
-    db.ref('games').once('value');
-    // db.ref('games').orderByChild('matchday').on("value", function(snapshot) {
-    //     snapshot.forEach(function(data) {
-    //       console.log("The " + data.key + " dinosaur's score is " + data.val() + data.val().matchday);
-    //     });
-    //   });
+    // db.ref('games').once('value');
+    db.ref('games').orderByChild('matchday').on("value", function(snapshot) {
+      });
 
 export const onceGetUsers = () =>
     db.ref('users').once('value');

@@ -20,11 +20,11 @@ import CreateGames from './CreateGames';
 import GameStatsPage from './GameStats';
 
 
-const App = () =>
+const App = history =>
     (
         <Fragment>
             <CssBaseline />
-            <Router>
+            <Router history={history}>
                 <div>
                     <NavigationBar />
 
