@@ -3,6 +3,7 @@ import {
     Link,
     withRouter,
  } from 'react-router-dom';
+import uuid from 'uuid/v1';
 import { auth, db } from '../firebase';
 
 import * as routes from '../constants/routes';
@@ -48,7 +49,7 @@ class SignUpForm extends Component {
       .then(authUser => {
 
         // Create a user in your own accessible Firebase Database too
-        db.doCreateUser(authUser.uid, username, email)
+        db.doCreateUser(authUser.user.uid, username, email)
           .then(() => {
             this.setState(() => ({ ...INITIAL_STATE }));
             history.push(routes.HOME);

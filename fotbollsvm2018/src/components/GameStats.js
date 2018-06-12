@@ -32,7 +32,7 @@ class GameStats extends React.Component {
     }
 }
 
-const GamesList = ({ games }) => {
+const GamesList = ({ games }) => (
     <div>
 
         <h2>List of Games</h2>
@@ -48,20 +48,20 @@ const GamesList = ({ games }) => {
                     <input type="text">
                     </input>
                     <p>{games[key].teamB}</p>
-                    <button>Submit</button>    
+                    <button>Submit</button>  
                 
                 </form>
             </div>
         )}
     </div>
+);
+    
 
-};
-
-const GameStatsPage = () => {
+const GameStatsPage = () => (
     <div>
         <h1>Game Stats</h1>
         <GameStats />
     </div>
-};
+);
 
 export default GameStatsPage;
