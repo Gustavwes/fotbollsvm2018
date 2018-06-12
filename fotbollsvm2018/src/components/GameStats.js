@@ -3,36 +3,43 @@ import { auth, db, firebase } from '../firebase';
 import * as routes from '../constants/routes';
 import AuthUserContext from './AuthUserContext';
 import uuid from 'uuid/v1';
+import { Form, Field, reduxForm } from 'redux-form';
+import { TextField } from '@material-ui/core';
+import { connect } from 'react-redux';
+
+import { getBets } from '../state/actions/bets';
 
 class GameStats extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             gamesDB: db.doGetAllGames(),
-            games: null,   
-            userId: null         
-           
+            games: null,
+            userId: null
+
         }
     }
 
     componentDidMount() {
         db.doGetAllGamesTest().then(snapshot =>
             this.setState(() => ({ games: snapshot.val() }))
-        ); 
-        var userId = firebase.auth.currentUser.uid;  
-         
-        this.setState({userId});
+        );
+        var userId = firebase.auth.currentUser.uid;
+
+        
+
+        this.setState({ userId });
 
     }
-    
-    
+
+
     render() {
         const { games } = this.state;
-        
+
         return (
             <div>
-               {/* <p>{this.state.userId}</p> */}
-                {!!games && <GamesList games={games} userid={this.state.userId} />}
+                {/* <p>{this.state.userId}</p> */}
+                {!!games && <GamesListForm games={games} userid={this.state.userId} {...this.props} />}
             </div>
         );
     }
@@ -43,7 +50,7 @@ class GameStats extends React.Component {
 //         {authUser =>
 //             <div>
 //                 <h1>Account: {authUser.email}</h1>
-               
+
 //             </div>
 //         }
 //     </AuthUserContext.Consumer>
@@ -61,74 +68,75 @@ const byPropKey = (propertyName, value) => () => ({
     [propertyName]: value,
 });
 
-class GamesList extends React.Component{
+class GamesListForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = { ...INITIAL_STATE };
-    }  
-    onSubmit = (event) => {
-        console.log('triggered');
-        const {
-            teamAResult,
-            teamBResult,
-            userId,
-            gameId
-        } = this.state;       
-        this.userid = this.props.userid;
-        // const {
-            //     history,
-            // } = this.props;
+        this.submitBet = this.submitBet.bind(this);
+    }
+    submitBet = (values) => {
+        const userId = this.props.userid;       
 
-        db.doCreateBet(uuid(),teamAResult,teamBResult,userId,gameId);
-        event.preventDefault();
+        db.doCreateBet(userId, values);
 
     }
-    render(){
+    render() {
+        const { handleSubmit } = this.props;
 
-        return(
+        return (
             <div>
-        
-                <h2>List of Games</h2>
-                <p>(Saved in Firebase Database)</p>
-            
+                 <Form onSubmit={handleSubmit(this.submitBet)}>
                 {Object.keys(this.props.games).map(key =>
                     <div key={key}>
-                        <form onSubmit={this.onSubmit}>
-                            <p>{this.props.games[key].teamA}</p>
-                            <input type="hidden" value={this.props.userid}></input>
+                       
+                            <label>{this.props.games[key].teamA}</label>
                             {/* Create hidden input for game Id here */}
-                            <input 
-                                id={`${key}teamA`}
-                                onChange={event => this.setState(byPropKey('teamAResult', event.target.value))}
-                                type="text"
-                                value={this.state.teamAResult}
+                            <Field
+                                name={`${key}.teamAResult`}
+                                component={({input, ...props}) => <TextField type="number" {...input} {...props}/>}
+                                >
+                            </Field>
+                                <label>vs</label>
+                            <Field
+                                name={`${key}.teamBResult`}
+                                component={({input, ...props}) => <TextField type="number" {...input} {...props}/>}
                             >
-                            </input>
-                            <p>vs</p>
-                            <input id={`${key}teamB`}
-                                onChange={event => this.setState(byPropKey('teamBResult', event.target.value))}
-                                type="text"
-                                value={this.state.teamBResult}
-                            >
-                            </input>
-                            <p>{this.props.games[key].teamB}</p>
+                            </Field>
+                            <label>{this.props.games[key].teamB}</label>
                             <button type="submit">Submit</button>
-        
-                        </form>
+                        
                     </div>
                 )}
+                </Form>
             </div>
         )
+       
     }
 
 }
 
 
-const GameStatsPage = () => (
-    <div>
-        <h1>Game Stats</h1>
-        <GameStats />
-    </div>
-);
+class GameStatsPage extends React.Component {
+    componentWillMount() {
+        this.props.getBets().then(() => console.log(this.props.initialValues));
+    }
 
-export default GameStatsPage;
+    render() { return (
+        <div>
+            <h1>Game Stats</h1>
+            <GameStats {...this.props} />
+        </div>
+    )}
+};
+
+GameStatsPage = reduxForm({form: 'gamesListForm', enableReinitialize: true })(GameStatsPage);
+
+const mapStateToProps = state => ({
+    initialValues: state.bets.bets,
+});
+
+const mapDispatchToProps = dispatch => ({
+    getBets: () => dispatch(getBets()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameStatsPage);
