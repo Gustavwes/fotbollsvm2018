@@ -10,7 +10,7 @@ const INITIAL_STATE = {
     time: '',
     teamA: '',
     teamB: '',
-    error: null
+    error: null,
 };
 const byPropKey = (propertyName, value) => () => ({
     [propertyName]: value,
@@ -20,8 +20,8 @@ class CreateMatch extends React.Component {
     constructor(props) {
         super(props);
         this.state = { ...INITIAL_STATE };
-    }   
-    onSubmit = (event) => {
+    }
+    onSubmit = event => {
         const {
             matchday,
             date,
@@ -34,7 +34,7 @@ class CreateMatch extends React.Component {
             history,
         } = this.props;
 
-      
+
         db.doCreateGame(uuid(), matchday, date, time, teamA, teamB)
             .then(() => {
                 this.setState(() => ({ ...INITIAL_STATE }));
@@ -45,9 +45,7 @@ class CreateMatch extends React.Component {
             });
 
 
-
         event.preventDefault();
-
     }
 
     render() {
@@ -57,7 +55,7 @@ class CreateMatch extends React.Component {
             time,
             teamA,
             teamB,
-            error
+            error,
         } = this.state;
         const isInvalid =
             matchday === '' ||
@@ -72,45 +70,48 @@ class CreateMatch extends React.Component {
                     value={matchday}
                     type="text"
                     name="matchDayInput"
-                    onChange={event => this.setState(byPropKey('matchday', event.target.value))} ></input>
+                    onChange={event => this.setState(byPropKey('matchday', event.target.value))}
+                />
                 <label>Date</label>
                 <input
                     value={date}
                     type="date"
                     name="date"
-                    onChange={event => this.setState(byPropKey('date', event.target.value))} ></input>
+                    onChange={event => this.setState(byPropKey('date', event.target.value))}
+                />
                 <label>Time</label>
                 <input
                     value={time}
                     type="text"
                     name="time"
-                    onChange={event => this.setState(byPropKey('time', event.target.value))} ></input>
+                    onChange={event => this.setState(byPropKey('time', event.target.value))}
+                />
                 <label>Team A</label>
                 <input
                     value={teamA}
                     type="text"
                     name="teamA"
-                    onChange={event => this.setState(byPropKey('teamA', event.target.value))} ></input>
+                    onChange={event => this.setState(byPropKey('teamA', event.target.value))}
+                />
                 <label>Team B</label>
                 <input
                     value={teamB}
                     type="text"
                     name="teamB"
-                    onChange={event => this.setState(byPropKey('teamB', event.target.value))} ></input>
+                    onChange={event => this.setState(byPropKey('teamB', event.target.value))}
+                />
 
                 <button disabled={isInvalid} type="submit">Save Game</button>
                 {error && <p>{error.message}</p>}
             </form>
         );
-
     }
-
 }
 
 const CreateGames = () =>
-    <div>
+    (<div>
         <h1>Create a Game</h1>
         <CreateMatch />
-    </div>
+     </div>);
 
 export default CreateGames;

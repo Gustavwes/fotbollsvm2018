@@ -3,31 +3,33 @@ import { Link } from 'react-router-dom';
 import { auth } from '../firebase';
 
 const PasswordForgetPage = () =>
-    <div>
-        <h1>PasswordForget Page</h1>
-        <PasswordForgetForm />
-    </div>
+    (
+        <div>
+            <h1>PasswordForget Page</h1>
+            <PasswordForgetForm />
+        </div>
+    );
 
-    const byPropKey = (propertyName, value) => () => ({
-        [propertyName]: value,
-    });
+const byPropKey = (propertyName, value) => () => ({
+    [propertyName]: value,
+});
 
-    const INITIAL_STATE = {
-        email: '',
-        error: null,
-    };
-    
-    class PasswordForgetForm extends Component {
-        constructor(props){
-            super(props);
+const INITIAL_STATE = {
+    email: '',
+    error: null,
+};
 
-            this.state={...INITIAL_STATE};
-        }
-        onSubmit = (event) => {
+class PasswordForgetForm extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { ...INITIAL_STATE };
+    }
+        onSubmit = event => {
             const { email } = this.state;
 
             auth.doPasswordReset(email)
-                .then(()=>{
+                .then(() => {
                     this.setState(() => ({ ...INITIAL_STATE }));
                 })
                 .cath(error => {
@@ -37,8 +39,8 @@ const PasswordForgetPage = () =>
             event.preventDefault();
         }
 
-        render(){
-            const{
+        render() {
+            const {
                 email,
                 error,
             } = this.state;
@@ -53,7 +55,7 @@ const PasswordForgetPage = () =>
                         type="text"
                         placeholder="Email Address"
                     />
-                    <button disabled={isInvalid} type = "submit">
+                    <button disabled={isInvalid} type="submit">
                         Reset My Password
                     </button>
 
@@ -61,12 +63,12 @@ const PasswordForgetPage = () =>
                 </form>
             );
         }
-    }
+}
 
-    const PasswordForgetLink = () =>
-        <p>
-            <Link to="/pw-forget">Forgot Password?</Link>
-        </p>
+const PasswordForgetLink = () =>
+    (<p>
+        <Link to="/pw-forget">Forgot Password?</Link>
+    </p>);
 
 export default PasswordForgetPage;
 
