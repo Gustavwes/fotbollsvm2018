@@ -34,8 +34,7 @@ class CreateMatch extends React.Component {
             history,
         } = this.props;
 
-
-        // Create a user in your own accessible Firebase Database too
+      
         db.doCreateGame(uuid(), matchday, date, time, teamA, teamB)
             .then(() => {
                 this.setState(() => ({ ...INITIAL_STATE }));

@@ -32,33 +32,36 @@ class GameStats extends React.Component {
     }
 }
 
-const GamesList = ({ games }) =>
-<div>
+const GamesList = ({ games }) => {
+    <div>
 
-    <h2>List of Games</h2>
-    <p>(Saved in Firebase Database)</p>
-    
-    {Object.keys(games).map(key =>
-        <div key={key}>
-            <form>
-                <p>{games[key].teamA}</p>
-                <input type="text">
-                </input>
-                <p>vs</p>
-                <input type="text">
-                </input>
-                <p>{games[key].teamB}</p>
-                <button>Submit</button>    
-            
-            </form>
-        </div>
-    )}
-</div>
+        <h2>List of Games</h2>
+        <p>(Saved in Firebase Database)</p>
+        
+        {Object.keys(games).map(key =>
+            <div key={key}>
+                <form>
+                    <p>{games[key].teamA}</p>
+                    <input type="text">
+                    </input>
+                    <p>vs</p>
+                    <input type="text">
+                    </input>
+                    <p>{games[key].teamB}</p>
+                    <button>Submit</button>    
+                
+                </form>
+            </div>
+        )}
+    </div>
 
-const GameStatsPage = () =>
+};
+
+const GameStatsPage = () => {
     <div>
         <h1>Game Stats</h1>
         <GameStats />
     </div>
+};
 
 export default GameStatsPage;
