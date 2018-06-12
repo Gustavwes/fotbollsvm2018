@@ -92,7 +92,6 @@ const byPropKey = (propertyName, value) => () => ({
                     <input type="text" />
                     <p>{games[key].teamB}</p>
                     <button>Submit</button>
-
                 </form>
              </div>))}
     </div>
@@ -160,7 +159,6 @@ class GamesList extends React.Component{
 
 }
 >>>>>>> be87fab7af487b89b2337be497140fb08140cf9a
-
 
 const GameStatsPage = () => (
     <div>
