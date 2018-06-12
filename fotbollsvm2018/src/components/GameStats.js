@@ -3,6 +3,7 @@ import { auth, db, firebase } from '../firebase';
 import * as routes from '../constants/routes';
 import AuthUserContext from './AuthUserContext';
 import uuid from 'uuid/v1';
+import {Field, reduxForm} from 'redux-form';
 
 class GameStats extends React.Component {
     constructor(props) {
