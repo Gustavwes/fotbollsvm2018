@@ -3,6 +3,7 @@ import {
     BrowserRouter as Router,
     Route,
 } from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Navigation from './Navigation';
 import NavigationBar from './NavigationBar';
@@ -25,8 +26,10 @@ const App = history =>
         <Fragment>
             <CssBaseline />
             <Router history={history}>
-                <div>
-                    <NavigationBar />
+            <Fragment>
+                <NavigationBar />
+                <Grid container spacing={8}>
+                    
 
                     <Route exact path={routes.LANDING} component={() => <LandingPage />} />
                     <Route exact path={routes.SIGN_UP} component={() => <SignUpPage />} />
@@ -37,7 +40,8 @@ const App = history =>
                     <Route exact path={routes.ADMIN} component={() => <AdminPage />} />
                     <Route exact path={routes.CREATEGAMES} component={() => <CreateGames />} />
                     <Route exact path={routes.GAMESTATS} component={() => <GameStatsPage />} />
-                </div>
+                </Grid>
+                </Fragment>
             </Router>
         </Fragment>
     );

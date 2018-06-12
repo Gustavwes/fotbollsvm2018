@@ -28,9 +28,9 @@ export const doCreateBet = (id, teamAResult, teamBResult, userId, gameId) =>
         gameId
     });
 export const doGetAllGamesTest = () =>
-    // db.ref('games').once('value');
-    db.ref('games').orderByChild('matchday').on("value", function(snapshot) {
-      });
+    db.ref('games').once('value');
+    // db.ref('games').orderByChild('matchday').on("value", function(snapshot) {
+    //   });
 
 export const onceGetUsers = () =>
     db.ref('users').once('value');

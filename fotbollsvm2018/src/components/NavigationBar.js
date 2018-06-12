@@ -33,7 +33,7 @@ const NavigationBar = ({ classes }) => {
                         variant="title"
                         color="inherit"
                     >
-                        Title
+                        Fotboll!
                     </Typography>
                     <AuthUserContext.Consumer>
                         { authUser => authUser
