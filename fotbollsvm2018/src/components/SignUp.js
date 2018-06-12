@@ -3,7 +3,6 @@ import {
     Link,
     withRouter,
  } from 'react-router-dom';
-import uuid from 'uuid/v1';
 import { auth, db } from '../firebase';
 
 import * as routes from '../constants/routes';
