@@ -44,12 +44,10 @@ const GamesList = ({ games }) => (
                     <input type="text" />
                     <p>{games[key].teamB}</p>
                     <button>Submit</button>
-
                 </form>
              </div>))}
     </div>
 );
-
 
 const GameStatsPage = () => (
     <div>

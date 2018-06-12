@@ -18,7 +18,7 @@ import withAuthentication from './withAuthentication';
 import AdminPage from './Admin';
 import CreateGames from './CreateGames';
 import GameStatsPage from './GameStats';
-
+import Stats from './Stats';
 
 const App = () =>
     (
@@ -37,6 +37,7 @@ const App = () =>
                     <Route exact path={routes.ADMIN} component={() => <AdminPage />} />
                     <Route exact path={routes.CREATEGAMES} component={() => <CreateGames />} />
                     <Route exact path={routes.GAMESTATS} component={() => <GameStatsPage />} />
+                    <Route exact path={routes.STATS} component={() => <Stats />} />
                 </div>
             </Router>
         </Fragment>
