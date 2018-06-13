@@ -1,7 +1,6 @@
 import React from "react";
-import { AppBar, Toolbar, IconButton, Typography, Button } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
 
 import AuthUserContext from './AuthUserContext';

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import React, { Fragment } from 'react';
 
+=======
+import React from 'react';
+import { db, firebase } from '../firebase';
+>>>>>>> 0cf09578277a41df17fd89d352e9ba4896099590
 import { Form, Field, reduxForm } from 'redux-form';
 import { TextField, List, ListItem, ListItemSecondaryAction, Button, ListSubheader, withStyles } from '@material-ui/core';
 import moment from 'moment';

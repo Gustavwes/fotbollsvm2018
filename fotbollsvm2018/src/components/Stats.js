@@ -1,46 +1,60 @@
 import React from 'react';
+import { db } from '../firebase'
 import '../../node_modules/react-vis/dist/style.css';
-import { DiscreteColorLegend, XYPlot, LineMarkSeries, LineSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxis } from 'react-vis';
+import { DiscreteColorLegend, XYPlot, LineMarkSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxis } from 'react-vis';
 
-const matchDays  = ['1','2','3','Round of 16','Quarter Finals', 'Semi Finals', 'Bronze Match', 'Finals']
+const matchDays  = ['1','2','3','Round of 16','Quarter Finals', 'Semi Finals', 'Bronze Match', 'Finals'];
+const examplePoints = [0,2,3,4,5,6,4,5];
 class Stats extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            userArray: [],
+            userDataSetArray: [],
+            usersNames: [],
+            lineMarkers: []
+
+        }
+        this.createDataSet = this.createDataSet.bind(this);
+        
     };
-
-    componentWillMount(){
-        console.log(matchDays);
-        const data = [
-            { x: matchDays[0], y: 0 },
-            { x: matchDays[1], y: 1 },
-            { x: matchDays[2], y: 2 },
-            { x: matchDays[3], y: 3 },
-            { x: matchDays[4], y: 5 },
-            { x: matchDays[5], y: 5 },
-            { x: matchDays[6], y: 6 },
-            { x: matchDays[7], y: 8 }
+    
+    createDataSet(user){
+        let userDataSet = {};
+        let dataPoints = [
+            { x: matchDays[0], y: examplePoints[0] },
+            { x: matchDays[1], y: examplePoints[1] },
+            { x: matchDays[2], y: examplePoints[2] },
+            { x: matchDays[3], y: examplePoints[3] },
+            { x: matchDays[4], y: examplePoints[4] },
+            { x: matchDays[5], y: examplePoints[5] },
+            { x: matchDays[6], y: examplePoints[6] },
+            { x: matchDays[7], y: examplePoints[7] }
         ];
+        userDataSet.username= user.username;
+        userDataSet.points = dataPoints;
+        this.state.userDataSetArray.push(userDataSet)
+    }
 
-        const data2 = [
-            { x: matchDays[0], y: 0 },
-            { x: matchDays[1], y: 0 },
-            { x: matchDays[2], y: 4 },
-            { x: matchDays[3], y: 7 },
-            { x: matchDays[4], y: 9 },
-            { x: matchDays[5], y: 12 },
-            { x: matchDays[6], y: 15 },
-            { x: matchDays[7], y: 30 }
-        ];
+    async componentWillMount(){      
 
         this.setState({
-            users: [{ name: 'Gustav', points: data },
-                     {name: 'Gurra', points: data2}]
+            users: {}
         });
+        const snapshot = await db.onceGetUsers();        
+        
+        this.setState(() => ({ users: snapshot.val() }));
+        Object.keys(this.state.users).forEach((key) =>{
+            this.state.userArray.push(this.state.users[key]);
+        });
+        this.state.userArray.forEach((user)=>{
+            this.createDataSet(user);
+        });
+        this.setState({lineMarkers: this.state.userDataSetArray.map(user => <LineMarkSeries key={user.username} data={user.points} />)}); 
+        this.setState({usersNames: this.state.userDataSetArray.map(user => user.username)});         
     };
-
+    
     render() {
-        const lineMarkers = this.state.users.map(user => <LineMarkSeries key={user.name} data={user.points} />);
-        const users = this.state.users.map(user => user.name);
         return (
             <div>
                 <XYPlot height={600} width={800} xType={'ordinal'}>
@@ -49,9 +63,9 @@ class Stats extends React.Component {
                     <HorizontalGridLines />
                     <XAxis title="Matches" />  
                     <YAxis title="Points" />
-                    { lineMarkers }
+                    { this.state.lineMarkers }
                 </XYPlot>
-                <DiscreteColorLegend width={180} items={users} /> 
+                <DiscreteColorLegend width={180} items={this.state.usersNames} /> 
             </div>
         );
     }

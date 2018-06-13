@@ -1,11 +1,10 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import {
     BrowserRouter as Router,
     Route,
 } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Navigation from './Navigation';
 import NavigationBar from './NavigationBar';
 import LandingPage from './Landing';
 import SignUpPage from './SignUp';
@@ -14,7 +13,6 @@ import PasswordForgetPage from './PasswordForget';
 import HomePage from './Home';
 import AccountPage from './Account';
 import * as routes from '../constants/routes';
-import { firebase } from '../firebase';
 import withAuthentication from './withAuthentication';
 import AdminPage from './Admin';
 import CreateGames from './CreateGames';

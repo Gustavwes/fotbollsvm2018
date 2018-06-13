@@ -1,5 +1,4 @@
 import { db } from './firebase';
-import firstBy from 'thenby';
 // User API
 
 export const doCreateUser = (id, username, email) =>
