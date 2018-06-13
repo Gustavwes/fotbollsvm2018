@@ -21,8 +21,8 @@ const NavigationAuth = ({ handleClose }) =>
             <MenuItem component={({...props}) => <Link to={routes.LANDING} {...props} />} onClick={handleClose}>Landing</MenuItem>
             <MenuItem component={({...props}) => <Link to={routes.HOME} {...props} />} onClick={handleClose}>Home</MenuItem>
             <MenuItem component={({...props}) => <Link to={routes.ACCOUNT} {...props} />} onClick={handleClose}>Account</MenuItem>
-            <MenuItem component={({...props}) => <Link to={routes.CREATEGAMES} {...props} />} onClick={handleClose}>Create Games</MenuItem>
-            <MenuItem component={({...props}) => <Link to={routes.GAMESTATS} {...props} />} onClick={handleClose}>Game Stats</MenuItem>
+            {/* <MenuItem component={({...props}) => <Link to={routes.CREATEGAMES} {...props} />} onClick={handleClose}>Create Games</MenuItem> */}
+            <MenuItem component={({...props}) => <Link to={routes.GAMESTATS} {...props} />} onClick={handleClose}>Game List</MenuItem>
             <MenuItem component={({...props}) => <Link to={routes.STATS} {...props} />} onClick={handleClose}>Stats</MenuItem>
         </Fragment>
 );

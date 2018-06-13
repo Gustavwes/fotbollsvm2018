@@ -4,8 +4,6 @@ import { Form, Field, reduxForm } from 'redux-form';
 import { TextField, List, ListItem, ListItemSecondaryAction, Button, ListSubheader, withStyles } from '@material-ui/core';
 import moment from 'moment';
 import { connect } from 'react-redux';
-
-import { db, firebase } from '../firebase';
 import { getBets } from '../state/actions/bets';
 import { getGames } from '../state/actions/games';
 
@@ -129,7 +127,7 @@ class GameStatsPage extends React.Component {
     render() {
  return (
         <div>
-            <h1>Game Stats</h1>
+            <h1>Game List</h1>
             <GameStats {...this.props} />
         </div>
     )
