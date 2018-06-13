@@ -1,8 +1,5 @@
 import React from 'react';
-import { auth, db, firebase } from '../firebase';
-import * as routes from '../constants/routes';
-import AuthUserContext from './AuthUserContext';
-import uuid from 'uuid/v1';
+import { db, firebase } from '../firebase';
 import { Form, Field, reduxForm } from 'redux-form';
 import { TextField } from '@material-ui/core';
 import { connect } from 'react-redux';

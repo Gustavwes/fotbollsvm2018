@@ -1,5 +1,3 @@
-import { RSAA } from 'redux-api-middleware';
-
 import * as types from '../constants';
 import { db, firebase } from '../../firebase';
 
