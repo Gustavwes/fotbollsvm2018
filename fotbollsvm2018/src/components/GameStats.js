@@ -160,7 +160,7 @@ class GameStatsPage extends React.Component {
             </div>
         );
 
-}
+    }
 }
 
 GameStatsPage = reduxForm({ form: 'gamesListForm', enableReinitialize: true })(withStyles(styles)(GameStatsPage));
