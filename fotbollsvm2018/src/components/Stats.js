@@ -2,37 +2,34 @@ import React from 'react';
 import '../../node_modules/react-vis/dist/style.css';
 import { DiscreteColorLegend, XYPlot, LineMarkSeries, LineSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxis } from 'react-vis';
 
+const matchDays  = ['1','2','3','Round of 16','Quarter Finals', 'Semi Finals', 'Bronze Match', 'Finals']
 class Stats extends React.Component {
     constructor(props) {
         super(props);
     };
 
     componentWillMount(){
-
+        console.log(matchDays);
         const data = [
-            { x: 0, y: 0 },
-            { x: 1, y: 1 },
-            { x: 2, y: 2 },
-            { x: 3, y: 3 },
-            { x: 4, y: 5 },
-            { x: 5, y: 5 },
-            { x: 6, y: 6 },
-            { x: 7, y: 8 },
-            { x: 8, y: 10 },
-            { x: 9, y: 11 }
+            { x: matchDays[0], y: 0 },
+            { x: matchDays[1], y: 1 },
+            { x: matchDays[2], y: 2 },
+            { x: matchDays[3], y: 3 },
+            { x: matchDays[4], y: 5 },
+            { x: matchDays[5], y: 5 },
+            { x: matchDays[6], y: 6 },
+            { x: matchDays[7], y: 8 }
         ];
 
         const data2 = [
-            { x: 0, y: 1 },
-            { x: 1, y: 3 },
-            { x: 2, y: 3 },
-            { x: 3, y: 4 },
-            { x: 4, y: 4 },
-            { x: 5, y: 4 },
-            { x: 6, y: 4 },
-            { x: 7, y: 4 },
-            { x: 8, y: 4 },
-            { x: 9, y: 4 }
+            { x: matchDays[0], y: 0 },
+            { x: matchDays[1], y: 0 },
+            { x: matchDays[2], y: 4 },
+            { x: matchDays[3], y: 7 },
+            { x: matchDays[4], y: 9 },
+            { x: matchDays[5], y: 12 },
+            { x: matchDays[6], y: 15 },
+            { x: matchDays[7], y: 30 }
         ];
 
         this.setState({
@@ -46,7 +43,8 @@ class Stats extends React.Component {
         const users = this.state.users.map(user => user.name);
         return (
             <div>
-                <XYPlot height={600} width={800}>
+                <XYPlot height={600} width={800} xType={'ordinal'}>
+                    
                     <VerticalGridLines />
                     <HorizontalGridLines />
                     <XAxis title="Matches" />  
