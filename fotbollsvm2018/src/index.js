@@ -18,16 +18,18 @@ const middleware = [thunk, apiMiddleware, routerMiddleware(history)];
 
 const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
 
-const store = createStoreWithMiddleware(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store =
+    createStoreWithMiddleware(
+        rootReducer,
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+    );
 
 document.addEventListener('DOMContentLoaded', () => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <App history={history} />
-    </Provider>,
-    document.getElementById('root'),
-  );
+    ReactDOM.render(
+        <Provider store={store}>
+            <App history={history} />
+        </Provider>,
+        document.getElementById('root'),
+    );
 });
-
-ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();

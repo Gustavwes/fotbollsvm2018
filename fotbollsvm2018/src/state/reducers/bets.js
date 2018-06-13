@@ -1,18 +1,18 @@
 import * as types from '../constants';
 
 export default (
-  state = {
-    bets: {},
-  },
-  action,
+    state = {
+        bets: {},
+    },
+    action,
 ) => {
-  switch (action.type) {
+    switch (action.type) {
     case types.GET_BETS:
-      return {
-        ...state,
-        bets: action.payload,
-      };
+        return {
+            ...state,
+            bets: action.payload,
+        };
     default:
-      return state;
-  }
+        return state;
+    }
 };
