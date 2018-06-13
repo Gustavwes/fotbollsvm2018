@@ -3,3 +3,4 @@ export const GET_GAMES_SUCCESS = 'GET_GAMES_SUCCESS';
 export const GET_GAMES_FAILURE = 'GET_GAMES_FAILURE';
 
 export const GET_BETS = 'GET_BETS';
+export const START_GET_BETS = 'START_GET_BETS';

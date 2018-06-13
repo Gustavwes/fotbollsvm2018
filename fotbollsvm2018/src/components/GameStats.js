@@ -1,11 +1,10 @@
 import React, { Fragment } from 'react';
 import { db, firebase } from '../firebase';
 import { Form, Field, reduxForm } from 'redux-form';
-import { TextField, List, ListItem, ListItemSecondaryAction, Button, ListSubheader, withStyles } from '@material-ui/core';
+import { TextField, List, ListItem, CircularProgress, ListItemSecondaryAction, Button, ListSubheader, withStyles, Typography, ListItemText } from '@material-ui/core';
 import moment from 'moment';
 import { connect } from 'react-redux';
-
-import { db, firebase } from '../firebase';
+import AuthUserContext from './AuthUserContext';
 import { getBets } from '../state/actions/bets';
 import { getGames } from '../state/actions/games';
 
@@ -18,87 +17,131 @@ const styles = theme => ({
         position: 'relative',
         overflow: 'auto',
     },
-    listSection: {
+    teamA: {
         backgroundColor: 'inherit',
+        maxWidth: '200px',
     },
-    ul: {
+    headline: {
+        marginTop: '10px',
+        marginBottom: '10px',
+    },
+    vs: {
+        textAlign: 'center',
+    },
+    numberInput: {
+        maxWidth: '20px',
+    },
+    spinner: {
+        display: 'block',
+        margin: '0 auto',
+    },
+    submitBtn: {
+        display: 'block',
+        margin: '10px auto',
+        width: '150px',
+        height: '50px',
+    },
+    teamB: {
         backgroundColor: 'inherit',
-        padding: 0,
+        maxWidth: '200px',
+        textAlign: 'right',
+        paddingRight: 0,
     },
 });
-
-const INITIAL_STATE = {
-    teamAResult: '',
-    teamBResult: '',
-    userId: '',
-    gameId: '',
-    error: null,
-};
 
 class GamesListForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { ...INITIAL_STATE };
         this.submitBet = this.submitBet.bind(this);
     }
 
-    submitBet = values => {
-        console.log(this.props.userId);
-        db.doCreateBet(this.props.userId, values);
+    async submitBet(values) {
+        const finalValues = {};
+
+        await this.props.getGames();
+
+        Object.keys(values).forEach(key => {
+            const { status, matchday } = this.props.games.filter(obj => obj.id === parseInt(key.slice(1), 10))[0];
+
+            if (status === 'IN_PLAY' || status === 'FINISHED') {
+                finalValues[key] = this.props.bets[key];
+            } else {
+                finalValues[key] = { matchday, ...values[key] };
+            }
+        });
+
+        db.doCreateBet(this.props.userId, finalValues);
     }
 
     render() {
-        const { handleSubmit, games, classes } = this.props;
+        const { handleSubmit, games, classes, waitingForBets } = this.props;
         return (
-            <Fragment>
+            <AuthUserContext.Consumer>
+                { authUser => authUser && !waitingForBets ?
                 <Form onSubmit={handleSubmit(this.submitBet)} className={classes.root}>
                     <List>
                         {games.map((game, index) =>
-                            (<Fragment>
-                        {(index === 0 || index === 16 || index === 32) && <ListSubheader>{`Matchday ${(index + 1) % 15}`}</ListSubheader> }
-                        <ListItem key={game.id}>
-                                <span>{moment(game.date).format('DD/MM, kk:mm')}</span>
-                                <label>{game.homeTeamName ? game.homeTeamName : 'TBD'}</label>
-                                <Field
-                                    name={`_${game.id}.teamAResult`}
-                                    component={({input, ...props}) => <TextField type="number" {...input} {...props}/>}
-                                    >
-                                </Field>
-                                    <label>vs</label>
-                                <Field
-                                    name={`_${game.id}.teamBResult`}
-                                    component={({input, ...props}) => <TextField type="number" {...input} {...props}/>}
+                            (<Fragment key={game.id}>
+                                {index === 0 && <ListSubheader>{`Matchday ${(index + 1) % 15}`}</ListSubheader>}
+                                {(index === 16 || index === 32) && <Fragment><Button color="primary" variant="contained" className={classes.submitBtn} 
+                                        type="submit">Submit</Button>
+                                        <ListSubheader>{`Matchday ${(index + 1) % 15}`}</ListSubheader></Fragment>}
+                                <ListItem>
+                                    {/* <ListItemText primary={moment(game.date).format('DD/MM, kk:mm')} /> */}
+                                    <ListItemText className={classes.teamA} primary={game.homeTeamName ? game.homeTeamName : 'TBD'} />
+                                    <Field
+                                        name={`_${game.id}.teamAResult`}
+                                        disabled={game.status === 'IN_PLAY' || game.status === 'FINISHED'}
+                                        className={classes.numberInput}
+                                        component={({ input, ...props }) => <TextField type="tel" {...input} {...props} />}
+                                        inputProps={{
+                                            maxLength: 2,
+                                        }}
                                 >
-                                </Field>
-                                <label>{game.awayTeamName ? game.awayTeamName : 'TBD'}</label>
-                                <ListItemSecondaryAction><Button type="submit">Submit</Button></ListItemSecondaryAction>
-                            
-                        </ListItem>
-                        </Fragment>),)}
+                                    </Field>
+                            <ListItemText primary={moment(game.date).format('DD/MM, kk:mm')} secondary="vs" className={classes.vs} />
+                                    <Field
+                                        name={`_${game.id}.teamBResult`}
+                                  disabled={game.status === 'IN_PLAY' || game.status === 'FINISHED'}
+                                        className={classes.numberInput}
+                                        style={{textAlign: 'right'}}
+                                        inputProps={{
+                                            maxLength: 2,
+                                        }}
+                                        component={({ input, ...props }) => <TextField type="tel" {...input} {...props} />}
+                                     />
+                                    <ListItemText className={classes.teamB}>{game.awayTeamName ? game.awayTeamName : 'TBD'}</ListItemText>
+                                    {/* <ListItemSecondaryAction>
+                                    <Button
+                                        disabled={game.status === 'IN_PLAY' || game.status === 'FINISHED'}
+                                        type="submit"
+                                        style={
+                                            {visibility: game.status === 'IN_PLAY' || game.status === 'FINISHED' ? 'hidden' : 'visible'}
+                                        }>Submit</Button>
+                                </ListItemSecondaryAction> */}
+
+                                </ListItem>
+                            </Fragment>) )}
+                            <Button color="primary" variant="contained" className={classes.submitBtn}
+                                        type="submit">Submit</Button>
                     </List>
-                </Form>
-            </Fragment>
+                            </Form> : <CircularProgress className={classes.spinner}/> }
+                </AuthUserContext.Consumer>
         );
     }
 }
 
-class GameStats extends React.Component {
+class GameStatsPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            games: null,
             userId: null,
         };
     }
 
-    async componentDidMount() {
-        // db.doGetAllGamesTest().then(snapshot =>
-        //     this.setState(() => ({ games: snapshot.val() }))
-        // );
-        await this.props.getGames();
-        this.props.games.forEach(game => {
-            game.id = game._links.self.href.split('/').slice(-1)[0];
-        });
+    componentWillMount() {
+        this.props.getBets();
+        this.props.getGames();
         // const userId = firebase.auth.currentUser.uid;
         // this.setState({ userId });
         firebase.auth.onAuthStateChanged(authUser => {
@@ -108,38 +151,24 @@ class GameStats extends React.Component {
         });
     }
 
-
     render() {
-        const { games } = this.props;
-
+        const { games, classes } = this.props;
         return (
-            <Fragment>
+            <div className="container">
+                <Typography variant="display3" className={classes.headline}>Game List</Typography>
                 {!!games && <GamesListForm games={games} userId={this.state.userId} {...this.props} />}
-            </Fragment>
+            </div>
         );
-    }
+
 }
-
-
-class GameStatsPage extends React.Component {
-    componentWillMount() {
-        this.props.getBets().then(() => console.log(this.props.initialValues));
-    }
-
-    render() {
- return (
-        <div>
-            <h1>Game Stats</h1>
-            <GameStats {...this.props} />
-        </div>
-    )
-; }
 }
 
 GameStatsPage = reduxForm({ form: 'gamesListForm', enableReinitialize: true })(withStyles(styles)(GameStatsPage));
 
 const mapStateToProps = state => ({
     initialValues: state.bets.bets,
+    bets: state.bets.bets,
+    waitingForBets: state.bets.isWaiting,
     games: state.games.games,
 });
 
