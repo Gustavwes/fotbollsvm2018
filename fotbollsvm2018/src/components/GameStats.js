@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 
 import { getBets } from '../state/actions/bets';
 
+
 class GameStats extends React.Component {
     constructor(props) {
         super(props);
@@ -37,25 +38,14 @@ class GameStats extends React.Component {
         const { games } = this.state;
 
         return (
-            <div>
-                {/* <p>{this.state.userId}</p> */}
+            <div>                
                 {!!games && <GamesListForm games={games} userid={this.state.userId} {...this.props} />}
             </div>
         );
     }
 }
-// const CurrentUserTest = () => (
-//     <div>
-//         <AuthUserContext.Consumer>
-//         {authUser =>
-//             <div>
-//                 <h1>Account: {authUser.email}</h1>
 
-//             </div>
-//         }
-//     </AuthUserContext.Consumer>
-//     </div>
-// )
+let MatchDayCount = 0;
 
 const INITIAL_STATE = {
     teamAResult: '',
@@ -64,33 +54,57 @@ const INITIAL_STATE = {
     gameId: '',
     error: null,
 };
-const byPropKey = (propertyName, value) => () => ({
-    [propertyName]: value,
-});
+
+class PrintMatchday extends React.Component {
+    constructor(props){
+        super(props);
+        this.handleAddOne = this.handleAddOne.bind(this);      
+       
+    }
+    handleAddOne(){
+        MatchDayCount = MatchDayCount+1;
+    };
+    
+    componentWillMount(){
+        this.handleAddOne();
+    }
+    render() {
+       
+        if(MatchDayCount ===1 || MatchDayCount===17 || MatchDayCount === 33){
+            return(
+                <div><p>Matchday {MatchDayCount%15}</p></div>
+    
+            )
+        }
+        return null;
+    }
+}
 
 class GamesListForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = { ...INITIAL_STATE };
         this.submitBet = this.submitBet.bind(this);
+        
     }
     submitBet = (values) => {
         const userId = this.props.userid;       
-
+        
         db.doCreateBet(userId, values);
-
+        
     }
+   
+  
     render() {
-        const { handleSubmit } = this.props;
-
+        const { handleSubmit } = this.props;        
         return (
-            <div>
-                 <Form onSubmit={handleSubmit(this.submitBet)}>
+            <div>  
+                <Form onSubmit={handleSubmit(this.submitBet)}>
                 {Object.keys(this.props.games).map(key =>
                     <div key={key}>
+                         <PrintMatchday />
                        
                             <label>{this.props.games[key].teamA}</label>
-                            {/* Create hidden input for game Id here */}
                             <Field
                                 name={`${key}.teamAResult`}
                                 component={({input, ...props}) => <TextField type="number" {...input} {...props}/>}
