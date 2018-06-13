@@ -70,11 +70,12 @@ class GamesListForm extends React.Component {
             }
         });
 
-        db.doCreateBet(this.props.userId, finalValues);
+        return db.doCreateBet(this.props.userId, finalValues);
     }
 
     render() {
-        const { handleSubmit, games, classes, waitingForBets } = this.props;
+        const { handleSubmit, games, classes, waitingForBets, submitting } = this.props;
+        console.log(submitting);
         return (
             <AuthUserContext.Consumer>
                 { authUser => authUser && !waitingForBets ?
@@ -84,12 +85,13 @@ class GamesListForm extends React.Component {
                             (<Fragment key={game.id}>
                                 {index === 0 && <ListSubheader>{`Matchday ${(index + 1) % 15}`}</ListSubheader>}
                                 {(index === 16 || index === 32) && <Fragment><Button color="primary" variant="contained" className={classes.submitBtn} 
-                                        type="submit">Submit</Button>
+                                        type="submit" disabled={submitting} >{submitting ? "Submitting..." : "Submit"}</Button>
                                         <ListSubheader>{`Matchday ${(index + 1) % 15}`}</ListSubheader></Fragment>}
                                 <ListItem>
                                     {/* <ListItemText primary={moment(game.date).format('DD/MM, kk:mm')} /> */}
                                     <ListItemText className={classes.teamA} primary={game.homeTeamName ? game.homeTeamName : 'TBD'} />
                                     <Field
+                                        parse={value => Number(value)}
                                         name={`_${game.id}.teamAResult`}
                                         disabled={game.status === 'IN_PLAY' || game.status === 'FINISHED'}
                                         className={classes.numberInput}
@@ -101,6 +103,7 @@ class GamesListForm extends React.Component {
                                     </Field>
                             <ListItemText primary={moment(game.date).format('DD/MM, kk:mm')} secondary="vs" className={classes.vs} />
                                     <Field
+                                        parse={value => Number(value)}
                                         name={`_${game.id}.teamBResult`}
                                   disabled={game.status === 'IN_PLAY' || game.status === 'FINISHED'}
                                         className={classes.numberInput}
@@ -122,8 +125,8 @@ class GamesListForm extends React.Component {
 
                                 </ListItem>
                             </Fragment>) )}
-                            <Button color="primary" variant="contained" className={classes.submitBtn}
-                                        type="submit">Submit</Button>
+                            <Button color="primary" variant="contained" className={classes.submitBtn} disabled={submitting}
+                                        type="submit">{submitting ? "Submitting..." : "Submit"}</Button>
                     </List>
                             </Form> : <CircularProgress className={classes.spinner}/> }
                 </AuthUserContext.Consumer>

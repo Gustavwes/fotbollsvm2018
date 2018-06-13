@@ -28,7 +28,7 @@ class HomePage extends Component {
         const { users } = this.state;
 
         return (
-            <div>
+            <div className="container">
                 <h1>Home</h1>
                 <p>The Home page is accessible by every signed in user</p>
                 { !!users && <UserList users={users} /> }

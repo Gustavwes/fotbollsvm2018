@@ -24,7 +24,8 @@ class Stats extends React.Component {
             usersNames: [],
             lineMarkers: [],
             currentUser: {},
-
+            users: {},
+            bets: {},
         }
         this.createDataSet = this.createDataSet.bind(this);
         this.calculatePoints = this.calculatePoints.bind(this);
@@ -62,6 +63,11 @@ class Stats extends React.Component {
         const tempBets = this.state.bets[userId];
         const tempBetsArray = [];
         let totalPoints = 0;
+
+        const realMatches = this.props.games.filter(match => match.status === 'FINISHED');
+
+        
+
         if(tempBets!=null || tempBets != undefined){            
             Object.keys(tempBets).forEach((key) =>{
                 tempBetsArray.push({...tempBets[key], id: key});
@@ -71,14 +77,14 @@ class Stats extends React.Component {
                 let matchDayTotalPoints=0;
                 if(matchDayBets.length !== 0){
                     matchDayBets.forEach(betMatch=>{
-                        let realMatchWithResult = fakeMatches.filter(realMatch=> realMatch.id ===betMatch.id)[0];
-                        if(realMatchWithResult!=undefined){
-                            if(realMatchWithResult.teamAResult == betMatch.teamAResult && realMatchWithResult.teamBResult == betMatch.teamBResult){
+                        let realMatchWithResult = realMatches.filter(realMatch => `_${realMatch.id}` === betMatch.id)[0];
+                        if(realMatchWithResult != undefined){
+                            if(realMatchWithResult.result.goalsHomeTeam == betMatch.teamAResult && realMatchWithResult.result.goalsAwayTeam == betMatch.teamBResult){
                                 matchDayTotalPoints = matchDayTotalPoints +2;   
                             }
-                            else if(((realMatchWithResult.teamAResult-realMatchWithResult.teamBResult)>0 && (betMatch.teamAResult-betMatch.teamBResult)>0) ||
-                                     ((realMatchWithResult.teamAResult-realMatchWithResult.teamBResult)<0 && (betMatch.teamAResult-betMatch.teamBResult)<0) ||
-                                     ((realMatchWithResult.teamAResult-realMatchWithResult.teamBResult)===0 && (betMatch.teamAResult-betMatch.teamBResult)===0)){
+                            else if(((realMatchWithResult.result.goalsHomeTeam-realMatchWithResult.result.goalsAwayTeam)>0 && (betMatch.teamAResult-betMatch.teamBResult)>0) ||
+                                     ((realMatchWithResult.result.goalsHomeTeam-realMatchWithResult.result.goalsAwayTeam)<0 && (betMatch.teamAResult-betMatch.teamBResult)<0) ||
+                                     ((realMatchWithResult.result.goalsHomeTeam-realMatchWithResult.result.goalsAwayTeam)===0 && (betMatch.teamAResult-betMatch.teamBResult)===0)){
                                         matchDayTotalPoints = matchDayTotalPoints +1;
                             }
                         }
@@ -96,13 +102,7 @@ class Stats extends React.Component {
         
         return matchDaysMap;
     }
-    async componentWillMount(){      
-
-        this.setState({
-            users: {},
-            bets: {},           
-        });
-
+    async componentDidMount(){      
         this.props.getGames();
         
         const usersSnapshot = await db.onceGetUsers();        
@@ -131,7 +131,8 @@ class Stats extends React.Component {
     
     render() {
         return (
-            <div>
+            <div className="container">
+                <div className="marginDiv" />
                 <XYPlot height={600} width={800} xType={'ordinal'}>
                     
                     <VerticalGridLines />
