@@ -163,6 +163,7 @@ class Stats extends React.Component {
                         <CustomTableCell numeric>Semi-Finals</CustomTableCell>
                         <CustomTableCell numeric>Bronze Match</CustomTableCell>
                         <CustomTableCell numeric>Final</CustomTableCell>
+                        <CustomTableCell numeric>Total</CustomTableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
@@ -173,12 +174,13 @@ class Stats extends React.Component {
                             {n.username}
                             </CustomTableCell>
                             <CustomTableCell numeric>{n.points[0].y}</CustomTableCell>
-                            <CustomTableCell numeric>{n.points[1].y}</CustomTableCell>
-                            <CustomTableCell numeric>{n.points[2].y}</CustomTableCell>
-                            <CustomTableCell numeric>{n.points[3].y}</CustomTableCell>
-                            <CustomTableCell numeric>{n.points[4].y}</CustomTableCell>
-                            <CustomTableCell numeric>{n.points[5].y}</CustomTableCell>
-                            <CustomTableCell numeric>{n.points[6].y}</CustomTableCell>
+                            <CustomTableCell numeric>{n.points[1].y-n.points[0].y}</CustomTableCell>
+                            <CustomTableCell numeric>{n.points[2].y-n.points[1].y}</CustomTableCell>
+                            <CustomTableCell numeric>{n.points[3].y-n.points[2].y}</CustomTableCell>
+                            <CustomTableCell numeric>{n.points[4].y-n.points[3].y}</CustomTableCell>
+                            <CustomTableCell numeric>{n.points[5].y-n.points[4].y}</CustomTableCell>
+                            <CustomTableCell numeric>{n.points[6].y-n.points[5].y}</CustomTableCell>
+                            <CustomTableCell numeric>{n.points[7].y-n.points[6].y}</CustomTableCell>
                             <CustomTableCell numeric>{n.points[7].y}</CustomTableCell>
                         </TableRow>
                         );
